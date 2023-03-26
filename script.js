@@ -31,6 +31,25 @@
         }
     }
 
+    let els = Array.prototype.slice.call(document.getElementsByClassName("correct wrong"))
+    if (els.length > 0){
+        let parents = {}
+        els.forEach(el => {
+            if (!Object.keys(parents).includes(el.parentElement.parentElement.children[0].children[0].children[0].innerText)){
+                parents[el.parentElement.parentElement.children[0].children[0].children[0].innerText] = []
+            }
+            parents[el.parentElement.parentElement.children[0].children[0].children[0].innerText].push(el)
+        })
+        count = Object.keys(res).length - (Object.keys(res[Object.keys(res).length-1]).length==0?1:0)
+        Object.keys(parents).forEach(key => {
+            res[count] = {}
+            for (let i=0;i<parents[key].length;i++){
+                res[count][i] = `Správne odpovede: ${parents[key][i].innerText}`
+            }
+            count++;
+        })
+    }
+
     let dl = window.document.createElement('a');
     dl.href = window.URL.createObjectURL(new Blob([JSON.stringify(res,undefined,2)], {type: 'text/plain'}));
     dl.download = 'odpovede.txt';
